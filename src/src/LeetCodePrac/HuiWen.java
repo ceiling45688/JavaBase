@@ -7,9 +7,9 @@ public class HuiWen {
     public static void main(String[] args){
         System.out.println("input number:");
         Scanner reader = new Scanner(System.in);
-//      System.out.println(Judge.funciotn(reader.nextInt()));
+      System.out.println(Judge.funciotn(reader.nextInt()));
 //        System.out.println(Judge2.IsPalindrome(reader.nextInt()));
-        System.out.println(Judge.IsPalindrome(reader.nextInt()));
+//        System.out.println(Judge.IsPalindrome(reader.nextInt()));
     }
 }
 class Judge{
@@ -30,20 +30,32 @@ class Judge{
         return true;
     }
 //    修改方法,这个更好，时间复杂度为线性
+//    注意，易错的是while的if判断中很容易有范围问题哈，长度为2位的回文会有问题
+
     public static boolean IsPalindrome(int x){
-        if (x < 0) {
+        //必须这样哈！
+        if (x  < 0) {
             return false;
         }
+        if (x < 10){
+            return  true;
+        }
+
 
         String xx = Integer.toString(x);
         int left = 0;
         int right = xx.length() - 1;
-        while(left >=0 && right <= xx.length()-1
+        while(left > -1 && right < xx.length()
                 && xx.charAt(left) == xx.charAt(right)){
+//            char a = xx.charAt(left);
+//            char b = xx.charAt(right);
+
             left++;
             right--;
+            //此处易错哈！
+//            double c = xx.length() / 2.0;
 
-            if(left < xx.length() / 2){
+            if(left >= xx.length() / 2.0){
                 return true;
             }
         }
