@@ -1,43 +1,31 @@
 package LeetCodePrac;
 /**R: Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.*/
 public class ValidParentheses {
+    //方法一（学习）:字符串替换，新学习了String 的两个方法 contains(c); replaceAll();
+    // 注意replaceAll方法实际上是用正则表达式匹配的，在regex中"\\"表示一个"\"，在java中一个"\"也要用"\\"表示。
+    // 这样，前一个"\\"代表regex中的"\"，后一个"\\"代表java中的"\"。所以要想使用replaceAll方法将字符串中的反斜杠("\")替换成空字符串("")，则需要这样写：str.replaceAll("\\\\","");
+    //Java API so cool!
+
     public static boolean isValid(String s){
-        String strOpen = "({[";
-        String strClose = ")}]";
-        if (s.isEmpty()){return true;}
-        if (s.charAt(0) == ')' || s.charAt(0) == '}'||s.charAt(0) == ']') {return false;}
-        //找到第一个字符在stropen中的下标
-        int firstCharPos = strOpen.indexOf(s.charAt(0));
-        //strclose对应的firstchar，在s中搜索，若无，说明是有一个括号是没有闭合的。
-        char firstCharInstrClose = strClose.charAt(firstCharPos);
-        if(s.indexOf(firstCharInstrClose,1) == -1){return false;}
+        if (s == null || "".equals(s)) {return true;}
 
-        //同理还有 []) 最后一位是没闭合的特殊情况
-        int lastCharPos = strClose.lastIndexOf(s.charAt(s.length()-1));
-        char lastCharInstrOpen = strOpen.charAt(lastCharPos);
-        if(s.indexOf(lastCharInstrOpen) == -1) {return false;}
-
-        //现在确定所有括号都是闭合的，接下来需要确定括号的顺序。
-        //从S的最后一位开始往前遍历直到第一位，每一位都判断它和它前一位是否闭合，或者同属strclose，是的话就继续往前搜索。
-        out: for(int i = s.length()-1; i>=1; i--){
-            int currentCharPos = strClose.indexOf(s.charAt(i));
-
-                //确定前一位是否同属一个close组 like )), }}, ]]
-                if (strClose.indexOf(s.charAt(i - 1)) == -1) {
-                    //确定与前一位是否闭合 like() {} []
-                    if (s.charAt(i-1) == strOpen.charAt(currentCharPos)) {
-                        i--;
-                        continue out;
-                    }
-                    return false;
-                }
-
+        while (s.contains("()") ||s.contains("[]") || s.contains("{}")){
+            if (s.contains("()")){
+                s = s.replaceAll("\\(\\)","");
             }
-        return true;
+            if (s.contains("[]")){
+                s =s.replaceAll("\\[\\]","");
+            }
+            if (s.contains("{}")){
+                s = s.replaceAll("\\{\\}","");
+            }
+        }
+        return "".equals(s) ? true : false;
+
     }
 
     public static void main(String[] args){
-        System.out.println(ValidParentheses.isValid("([])"));
+        System.out.println(ValidParentheses.isValid("([]}"));
     }
 }
 
